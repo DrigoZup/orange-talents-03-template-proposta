@@ -25,7 +25,7 @@ public class ProposalController {
 	ProposalRepository repository;
 
 	@Autowired
-	ProposalAnalysisSubmitter proposalAnalysis;
+	ProposalAnalysisSubmitter analysis;
 
 	@PostMapping
 	public ResponseEntity<?> createProposal(@RequestBody @Valid ProposalRequest request,
@@ -36,11 +36,12 @@ public class ProposalController {
 			return ResponseEntity.unprocessableEntity().body(new ResponseDto("Duplicated Argument"));
 		}
 		Proposal proposal = request.convertToEntity();
-
-		ProposalStatus status = proposalAnalysis.submitForAnalysis(proposal);
-		proposal.updateStatus(status);
-
 		repository.save(proposal);
+
+		ProposalStatus status = analysis.submitForAnalysis(proposal);
+		proposal.updateStatus(status);
+		repository.save(proposal);
+
 
 		URI uri = uriBuilder.path("proposals/{id}").buildAndExpand(proposal.getId()).toUri();
 		return ResponseEntity.created(uri).body(new ProposalResponse(proposal));

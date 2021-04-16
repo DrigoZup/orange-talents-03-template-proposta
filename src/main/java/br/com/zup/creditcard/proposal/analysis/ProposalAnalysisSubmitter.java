@@ -15,7 +15,7 @@ public class ProposalAnalysisSubmitter {
 
 	public ProposalStatus submitForAnalysis(Proposal proposal) {
 		try {
-			ProposalAnalysisResponse analysisResponse = proposalAnalysisClient.submitForAnalysis(proposal);
+			ProposalAnalysisResponse analysisResponse = proposalAnalysisClient.submitForAnalysis(new ProposalAnalysisRequest(proposal));
 			return analysisResponse.verifyStatus();
 		} catch (FeignException.UnprocessableEntity e ) {
 			return ProposalStatus.NOT_ELIGIBLE;

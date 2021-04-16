@@ -64,9 +64,12 @@ public class Proposal {
 		return salary;
 	}
 	
+	public ProposalStatus getStatus() {
+		return status;
+	}
+	
 	public void updateStatus(ProposalStatus status) {
 		this.status = status;
 	}
-
 	
 }
